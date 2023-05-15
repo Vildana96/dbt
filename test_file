@@ -1,0 +1,1 @@
+select count(*) from `main-beanbag-366508.ofrex_pricing.KundeExcludedNumber`
