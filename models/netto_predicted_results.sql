@@ -396,6 +396,7 @@ ON f.Cust_Number=g.Cust_Number
 WHERE (flag='change' AND Art_Number_6 IN ('921007', '921004')) OR
 (Art_Number_6 NOT IN ('921007', '921004'))
 )
+
 SELECT ROW_NUMBER() OVER() AS index_column, *
 FROM (
   SELECT *, ROW_NUMBER() OVER (PARTITION BY Cust_Number, Art_Number) AS row_distinct
