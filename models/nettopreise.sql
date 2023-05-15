@@ -27,7 +27,7 @@ FROM (
   WHERE CustArtCond_CustBoType='2'
 ) AS cond
 INNER JOIN `main-beanbag-366508.dbt_vbakarevic.M01Kunde` AS kunde2
-ON CAST(cond.CustArtCond_CustBoId AS STRING)=kunde2.Cust_CustCondDefBoId),
+ON CAST(cond.CustArtCond_CustBoId AS STRING)=kunde2.Cust_CustCondDefBoId)
 
 SELECT *, CAST(CASE
   WHEN Cust_Number IS NOT NULL THEN CAST(Cust_Number AS STRING)
@@ -47,8 +47,8 @@ FROM (
   cond1.CustArtCond_ArtBoType
   FROM
   (
-    SELECT * FROM main-beanbag-366508.dbt_vbakarevic.ArtikelFiltered as af
-    CROSS JOIN main-beanbag-366508.dbt_vbakarevic.KundeUnique as kunde
+    SELECT * FROM ArtikelFiltered as af
+    CROSS JOIN KundeUnique as kunde
   ) AS fb
   LEFT JOIN (
     SELECT *
@@ -72,8 +72,8 @@ FROM (
   cond2.CustArtCond_ArtBoType
   FROM
   (
-    SELECT * FROM main-beanbag-366508.dbt_vbakarevic.ArtikelFiltered as af
-    CROSS JOIN main-beanbag-366508.dbt_vbakarevic.KundeUnique as kunde
+    SELECT * FROM ArtikelFiltered as af
+    CROSS JOIN KundeUnique as kunde
   ) AS fb
   LEFT JOIN (
     SELECT *
