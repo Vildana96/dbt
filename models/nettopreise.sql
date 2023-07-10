@@ -1,11 +1,11 @@
 with ArtikelFiltered as (
 SELECT * FROM (SELECT a.Art_Number, a.Art_BoId, a.Art_ArtMisC1No 
-  FROM main-beanbag-366508.dbt_vbakarevic.M01Artikel AS a 
-		INNER JOIN main-beanbag-366508.dbt_vbakarevic.ArtikelActive AS ap 
+  FROM main-beanbag-366508.dbt.M01Artikel AS a 
+		INNER JOIN main-beanbag-366508.dbt.ArtikelActive AS ap 
       ON a.Art_Number = ap.ArtNr 
         WHERE NOT a.Art_Number LIKE '%M%' AND ap.Passiv=0
 ) AS af
-INNER JOIN main-beanbag-366508.dbt_vbakarevic.M01ArtSal AS sal
+INNER JOIN main-beanbag-366508.dbt.M01ArtSal AS sal
 ON sal.ArtSal_BoId = af.Art_BoId),
 
 KundeUnique AS (
@@ -13,20 +13,20 @@ SELECT DISTINCT cond.CustArtCond_CustBoType, cond.CustArtCond_CustBoId, kunde1.C
 '' AS Cust_CustCondDefBoId, NULL AS client
 FROM (
   SELECT *
-  FROM `main-beanbag-366508.dbt_vbakarevic.M01CustArtCond`
+  FROM `main-beanbag-366508.dbt.M01CustArtCond`
   WHERE CustArtCond_CustBoType='1'AND CustArtCond_CustBoId >= 10000
 ) AS cond
-INNER JOIN `main-beanbag-366508.dbt_vbakarevic.M01Kunde` AS kunde1
+INNER JOIN `main-beanbag-366508.dbt.M01Kunde` AS kunde1
 ON cond.CustArtCond_CustBoId=kunde1.Cust_Number
 UNION ALL
 SELECT DISTINCT cond.CustArtCond_CustBoType, cond.CustArtCond_CustBoId, NULL,
 kunde2.Cust_CustCondDefBoId, kunde2.Cust_Number AS client
 FROM (
   SELECT *
-  FROM `main-beanbag-366508.dbt_vbakarevic.M01CustArtCond`
+  FROM `main-beanbag-366508.dbt.M01CustArtCond`
   WHERE CustArtCond_CustBoType='2'
 ) AS cond
-INNER JOIN `main-beanbag-366508.dbt_vbakarevic.M01Kunde` AS kunde2
+INNER JOIN `main-beanbag-366508.dbt.M01Kunde` AS kunde2
 ON CAST(cond.CustArtCond_CustBoId AS STRING)=kunde2.Cust_CustCondDefBoId)
 
 SELECT *, CAST(CASE
@@ -54,12 +54,12 @@ FROM (
     SELECT *
     FROM (
       SELECT *
-      FROM main-beanbag-366508.dbt_vbakarevic.M01CustArtCond
+      FROM main-beanbag-366508.dbt.M01CustArtCond
       WHERE CustArtCond_CustBoType='2'
     ) AS cond 
     INNER JOIN (
       SELECT *
-      FROM main-beanbag-366508.dbt_vbakarevic.M01SalCondPrice 
+      FROM main-beanbag-366508.dbt.M01SalCondPrice 
       WHERE NOT (SalCondPrice_Price1=0 AND SalCondPrice_SpRebatePerc=0)
     ) AS sal
     ON cond.CustArtCond_ActualNormalPriceBoId = sal.SalCondPrice_BoId
@@ -79,12 +79,12 @@ FROM (
     SELECT *
     FROM (
       SELECT *
-      FROM main-beanbag-366508.dbt_vbakarevic.M01CustArtCond
+      FROM main-beanbag-366508.dbt.M01CustArtCond
       WHERE CustArtCond_CustBoType='1' AND CustArtCond_CustBoId >= 10000
     ) AS cond
     INNER JOIN (
       SELECT *
-      FROM main-beanbag-366508.dbt_vbakarevic.M01SalCondPrice 
+      FROM main-beanbag-366508.dbt.M01SalCondPrice 
       WHERE NOT (SalCondPrice_Price1=0 AND SalCondPrice_SpRebatePerc=0)
     ) AS sal
     ON cond.CustArtCond_ActualNormalPriceBoId = sal.SalCondPrice_BoId) AS cond2
@@ -94,5 +94,5 @@ FROM (
 )
 WHERE Cust_CustCondDefBoId NOT IN (
   SELECT DISTINCT CAST(Nr_ AS STRING)
-  FROM `main-beanbag-366508.dbt_vbakarevic.CustVordef`
+  FROM `main-beanbag-366508.dbt.CustVordef`
 )
