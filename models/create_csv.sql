@@ -10,3 +10,4 @@
          ") }}
 select CONCAT(CustArtCond_CustBoType, ',', Cust_Number, ',', 1, ',', Art_Number, ';', FORMAT('%.2f', y_final_final_new)) AS result
         from {{ ref('netto_predicted_results') }}
+
