@@ -8,7 +8,7 @@ FROM (
   FROM {{ref('netto_labels')}}) AS g
 LEFT JOIN (
   SELECT Kundennummer, Artikelnummer, DokDatum, Menge, KalkEsp, DBCHF, DBCHFMIS, Umsatz, UmsatzMIs, Betrag, PosVP1
-  FROM `main-beanbag-366508.dbt_vbakarevic.View_M01_REGS_VDOKITEM_YEAR_TODAY` 
+  FROM `main-beanbag-366508.dbt.M01_REGS_VDOKITEM_ALL` 
   WHERE DokDatum < '2022-01-01') AS h
 ON CAST(h.Kundennummer AS STRING)= g.Kundennummer AND h.Artikelnummer = g.Art_Number),
 
@@ -22,7 +22,7 @@ end
 AS bucket
 FROM (
   SELECT Kundennummer, SUM(UmsatzMIs) AS revenue
-  FROM `main-beanbag-366508.dbt_vbakarevic.View_M01_REGS_VDOKITEM_YEAR_TODAY` AS h
+  FROM `main-beanbag-366508.dbt.M01_REGS_VDOKITEM_ALL` AS h
   WHERE h.DokDatum >= '2021-01-01' AND h.DokDatum < '2022-01-01'
   GROUP BY Kundennummer
 )
@@ -107,7 +107,7 @@ LEFT JOIN (
           *,
           ROUND(h.DBCHFMIS/NULLIF(h.Menge, 0) + h.KalkEsp, 2) AS y_old
         FROM
-          `main-beanbag-366508.dbt_vbakarevic.View_M01_REGS_VDOKITEM_YEAR_TODAY` AS h
+          `main-beanbag-366508.dbt.M01_REGS_VDOKITEM_ALL` AS h
         WHERE
           h.DokDatum >= '2021-01-01'
           AND h.DokDatum < '2022-01-01' ) ))

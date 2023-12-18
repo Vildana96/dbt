@@ -17,7 +17,7 @@ FROM (
     FROM {{ ref('nettopreise') }}
     WHERE SalCondPrice_Price1!=0 AND SalCondPrice_SpRebatePerc=0
   ) AS neto
-  INNER JOIN `main-beanbag-366508.dbt_vbakarevic.M01Artikel` AS art
+  INNER JOIN `main-beanbag-366508.dbt.M01Artikel` AS art
   ON neto.Art_Number = art.Art_Number
 )),
 

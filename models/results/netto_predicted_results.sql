@@ -7,7 +7,7 @@ WHEN y_final_new_unique IS NOT NULL AND Art_Number_6 IN ('921007', '921004') AND
 ELSE ROUND(y_final_corrected*1.1, 2)
 END AS y_final_final
 FROM (
-  SELECT f.*, cost/(1-sales_margin_percent_final_corrected) AS y_final_corrected, 
+  SELECT f.*, cost/NULLIF(1-sales_margin_percent_final_corrected, 0) AS y_final_corrected, 
   FROM(
   SELECT *, CASE 
   WHEN type_new='6' AND (sales_margin_percent_final<=0 OR sales_margin_percent_final>0.6) THEN 0.2
@@ -70,6 +70,8 @@ FROM (
 )
 )
 WHERE row_distinct = 1
+
+
 
 
 
